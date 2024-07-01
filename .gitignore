@@ -1,0 +1,9 @@
+# transient cache
+transient/
+
+# emacs
+*~
+auto-save-list/
+elpa/
+elpaca/
+url/
