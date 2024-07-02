@@ -1,4 +1,4 @@
-; -*- eval: (outline-minor-mode t)
+;;; elpaca install
 (defvar elpaca-installer-version 0.7)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
@@ -38,29 +38,27 @@
 (add-hook 'after-init-hook #'elpaca-process-queues)
 (elpaca `(,@elpaca-order))
 
-;; install use-package support
+;;; install use-package support
 (elpaca elpaca-use-package
-
-;; Enable use-package :ensure support for Elpaca.
   (elpaca-use-package-mode))
 
-;; packages
+;;; packages
 
-;; xref (updated version for project.el)
+;;; xref (updated version for project.el)
 (use-package xref :ensure t)
 
-;; project.el
+;;; project.el
 (use-package project :ensure t
   :after xref
   :config
   (setq Buffer-menu-show-internal t))
 
-;; gruvbox theme
+;;; gruvbox theme
 (use-package gruvbox-theme :ensure t
   :config
   (load-theme 'gruvbox-dark-hard))
 
-;; ivy, swiper, counsel
+;;; ivy, swiper, counsel
 (use-package ivy :ensure t
   :config
   (ivy-mode 1)
@@ -74,43 +72,43 @@
 
 (use-package swiper :ensure t)
 
+;;; lsp-mode for compatible langs
 
 (use-package lsp-mode :ensure t)
 
+;;; adaptive wrap
 (use-package adaptive-wrap :ensure 
   :hook (org-mode . adaptive-wrap-prefix-mode)
   :config
   (setq adaptive-wrap-extra-indent 2))
 
-;; org mode 
+;;; org mode 
 (use-package org :ensure t
-  :bind (("C-c a" . org-agenda))
+  :bind (("C-c a" . org-agenda)
+	 ("C-c c" . org-capture))
   :hook (org-mode . visual-line-mode)
   :config
   (setq org-todo-keywords
 	'((sequence "TODO" "IN-PROGRESS" "BLOCKED" "DONE")))
-  (setq org-startup-indented t))
+  (setq org-startup-indented t)
+  (setq org-agenda-todo-list-sublevels t))
 
-;; org-roam
-(use-package org-roam :ensure t
-  :after org)
-
-;; org-superstar
+;;; org-superstar
 (use-package org-superstar :ensure t
   :after org
   :hook (org-mode . org-superstar-mode))
 
-;; transient(required update for magit)
+;;; transient(required update for magit)
 (use-package transient :ensure t)
 
-;; magit
+;;; magit
 (use-package magit :ensure t
   :after transient)
 
-;; go
+;;; go
 (use-package go-mode :ensure t)
 
-;; emacs settings
+;;; emacs settings
 (use-package emacs :ensure nil
   :config
   ;; rudimentary setup options
@@ -120,18 +118,15 @@
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
   ;; always start fullscreen
-  (add-to-list 'default-frame-alist '(fullscreen . maximized)))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("a73a73ae1cd9a1a98d43a135b188a59f21b11dd209746cbed3decae03f7754dd" default))
- '(org-agenda-files '("c:/Users/frank/emacs-notes/todo.org")))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+  (add-to-list 'default-frame-alist '(fullscreen . maximized))
+  ;; set custom var file so this isn't polluted
+  (setq custom-file "~/.emacs.d/custom.el")
+  ;; load it if not already loaded
+  (unless (fboundp 'custom-file-loaded)
+    (load custom-file)
+    (setq custom--file-loaded t)))
+
+;;; Local Variables:
+;;  outline-regexp: ";;; "
+;;  eval: (outline-minor-mode t)
+;;  End:
