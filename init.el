@@ -45,10 +45,37 @@
 
 ;; packages
 
+;; xref (updated version for project.el)
+(use-package xref :ensure t)
+
+;; project.el
+(use-package project :ensure t
+  :after xref
+  :config
+  (setq Buffer-menu-show-internal t))
+
 ;; gruvbox theme
 (use-package gruvbox-theme :ensure t
   :config
   (load-theme 'gruvbox-dark-hard))
+
+;; ivy, swiper, counsel
+(use-package ivy :ensure t
+  :config
+  (ivy-mode 1)
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "(%d/%d) ")
+  )
+
+(use-package counsel :ensure t
+  :after ivy
+  :config
+  (counsel-mode 1))
+
+(use-package swiper :ensure t)
+
+
+(use-package lsp-mode :ensure t)
 
 ;; org mode (TODO: uncomment :ensure once back online)
 (use-package org :ensure t
@@ -83,6 +110,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("a73a73ae1cd9a1a98d43a135b188a59f21b11dd209746cbed3decae03f7754dd" default))
  '(org-agenda-files
    '("~/emacs-notes/test2.org" "c:/Users/frank/emacs-notes/test.org")))
 (custom-set-faces
