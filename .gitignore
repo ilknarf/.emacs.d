@@ -11,3 +11,5 @@ org-persist/
 server/
 recentf
 projects
+\#*\#
+eshell/

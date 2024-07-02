@@ -1,3 +1,4 @@
+; -*- eval: (outline-minor-mode t)
 (defvar elpaca-installer-version 0.7)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
@@ -64,8 +65,7 @@
   :config
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers t)
-  (setq ivy-count-format "(%d/%d) ")
-  )
+  (setq ivy-count-format "(%d/%d) "))
 
 (use-package counsel :ensure t
   :after ivy
@@ -77,12 +77,28 @@
 
 (use-package lsp-mode :ensure t)
 
-;; org mode (TODO: uncomment :ensure once back online)
+(use-package adaptive-wrap :ensure 
+  :hook (org-mode . adaptive-wrap-prefix-mode)
+  :config
+  (setq adaptive-wrap-extra-indent 2))
+
+;; org mode 
 (use-package org :ensure t
   :bind (("C-c a" . org-agenda))
+  :hook (org-mode . visual-line-mode)
   :config
   (setq org-todo-keywords
-	'((sequence "TODO" "IN-PROGRESS" "BLOCKED" "DONE"))))
+	'((sequence "TODO" "IN-PROGRESS" "BLOCKED" "DONE")))
+  (setq org-startup-indented t))
+
+;; org-roam
+(use-package org-roam :ensure t
+  :after org)
+
+;; org-superstar
+(use-package org-superstar :ensure t
+  :after org
+  :hook (org-mode . org-superstar-mode))
 
 ;; transient(required update for magit)
 (use-package transient :ensure t)
@@ -112,8 +128,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    '("a73a73ae1cd9a1a98d43a135b188a59f21b11dd209746cbed3decae03f7754dd" default))
- '(org-agenda-files
-   '("~/emacs-notes/test2.org" "c:/Users/frank/emacs-notes/test.org")))
+ '(org-agenda-files '("c:/Users/frank/emacs-notes/todo.org")))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
