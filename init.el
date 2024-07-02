@@ -45,12 +45,27 @@
 
 ;; packages
 
+;; gruvbox theme
+(use-package gruvbox-theme :ensure t
+  :config
+  (load-theme 'gruvbox-dark-hard))
+
+;; org mode (TODO: uncomment :ensure once back online)
+(use-package org :ensure t
+  :bind (("C-c a" . org-agenda))
+  :config
+  (setq org-todo-keywords
+	'((sequence "TODO" "IN-PROGRESS" "BLOCKED" "DONE"))))
+
 ;; transient(required update for magit)
 (use-package transient :ensure t)
 
 ;; magit
 (use-package magit :ensure t
   :after transient)
+
+;; go
+(use-package go-mode :ensure t)
 
 ;; emacs settings
 (use-package emacs :ensure nil
@@ -61,7 +76,18 @@
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
-  (load-theme 'modus-vivendi)
   ;; always start fullscreen
   (add-to-list 'default-frame-alist '(fullscreen . maximized)))
-
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(org-agenda-files
+   '("~/emacs-notes/test2.org" "c:/Users/frank/emacs-notes/test.org")))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
