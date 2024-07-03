@@ -144,6 +144,10 @@
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
+  ;; autocomplete brackets
+  (electric-pair-mode 1)
+  ;; delete whitepace on save
+  (add-hook 'write-file-hooks 'delete-trailing-whitespace)
   ;; always start fullscreen
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
   ;; set custom var file so this isn't polluted
@@ -157,7 +161,7 @@
   (load-theme 'modus-vivendi)
   ;; add default font
   (add-to-list 'default-frame-alist
-	       ('font . "DejaVu Sans Mono-10")))
+	       '(font . "DejaVu Sans Mono-12")))
 
 
 ;;; Local Variables:
