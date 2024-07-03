@@ -53,11 +53,6 @@
   :config
   (setq Buffer-menu-show-internal t))
 
-;;; gruvbox theme
-(use-package gruvbox-theme :ensure t
-  :config
-  (load-theme 'gruvbox-dark-hard))
-
 ;;; ivy, swiper, counsel
 (use-package ivy :ensure t
   :demand
@@ -92,7 +87,7 @@
 ;;; lsp-mode for compatible langs
 
 (use-package lsp-mode :ensure t
-  :command lsp
+  :commands lsp
   :hook ((rust-mode . lsp)
 	 (go-mode .lsp)))
 
@@ -152,11 +147,16 @@
   ;; always start fullscreen
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
   ;; set custom var file so this isn't polluted
-  (setq custom-file "~/.emacs.d/custom.el")
+  (defconst custom-file-path "~/.emacs.d/custom.el")
+  ;; NOERROR to ignore nonexistent file. Emacs will create it
+  (setq custom-file custom-file-path)
   ;; load it if not already loaded
   (unless (fboundp 'custom-file-loaded)
-    (load custom-file)
-    (setq custom--file-loaded t)))
+  (load custom-file)
+  (setq custom--file-loaded t))
+  ;; load theme
+  (load-theme 'modus-vivendi))
+
 
 ;;; Local Variables:
 ;;  outline-regexp: ";;; "
