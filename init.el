@@ -79,17 +79,35 @@
   :after ivy
   :bind ("C-s" . swiper-isearch))
 
+;;; company for autocompletion
+(use-package company :ensure t
+  :config
+  (company-mode))
+
+;;; flycheck for on-the-fly checking
+(use-package flycheck :ensure t
+  :config
+  (global-flycheck-mode))
+
 ;;; lsp-mode for compatible langs
 
-(use-package lsp-mode :ensure t)
+(use-package lsp-mode :ensure t
+  :command lsp
+  :hook ((rust-mode . lsp)
+	 (go-mode .lsp)))
+
+(use-package lsp-ui :ensure t)
+					;
+;; ivy interface for lsp-mode
+(use-package lsp-ivy :ensure t)
 
 ;;; adaptive wrap
-(use-package adaptive-wrap :ensure 
+(use-package adaptive-wrap :ensure
   :hook (org-mode . adaptive-wrap-prefix-mode)
   :config
   (setq adaptive-wrap-extra-indent 2))
 
-;;; org mode 
+;;; org mode
 (use-package org :ensure t
   :bind (("C-c a" . org-agenda)
 	 ("C-c c" . org-capture))
@@ -117,14 +135,10 @@
   :after transient)
 
 ;;; go
-(use-package go-mode :ensure t
-  :after lsp-mode
-  :hook (go-mode . lsp))
+(use-package go-mode :ensure t)
 
 ;;; rust
-(use-package rust-mode :ensure t
-  :after lsp-mode
-  :hook (rust-mode . lsp))
+(use-package rust-mode :ensure t)
 
 ;;; emacs settings
 (use-package emacs :ensure nil
@@ -147,4 +161,5 @@
 ;;; Local Variables:
 ;;  outline-regexp: ";;; "
 ;;  eval: (outline-minor-mode t)
+;;  byte-compile-warnings: (not free-vars)
 ;;  End:
