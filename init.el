@@ -148,14 +148,16 @@
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
   ;; set custom var file so this isn't polluted
   (defconst custom-file-path "~/.emacs.d/custom.el")
-  ;; NOERROR to ignore nonexistent file. Emacs will create it
   (setq custom-file custom-file-path)
   ;; load it if not already loaded
-  (unless (fboundp 'custom-file-loaded)
-  (load custom-file)
-  (setq custom--file-loaded t))
+  (unless (or (fboundp 'custom-file-loaded) (not (file-exists-p custom-file-path)))
+    (load custom-file)
+    (setq custom--file-loaded t))
   ;; load theme
-  (load-theme 'modus-vivendi))
+  (load-theme 'modus-vivendi)
+  ;; add default font
+  (add-to-list 'default-frame-alist
+	       ('font . "DejaVu Sans Mono-10")))
 
 
 ;;; Local Variables:
