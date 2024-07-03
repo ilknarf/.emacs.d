@@ -60,17 +60,24 @@
 
 ;;; ivy, swiper, counsel
 (use-package ivy :ensure t
+  :demand
+  :bind (("C-c C-r" . ivy-resume)
+	 ("C-c v" . ivy-push-view)
+	 ("C-c V" . ivy-push-view))
   :config
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers t)
   (setq ivy-count-format "(%d/%d) "))
 
 (use-package counsel :ensure t
+  :demand
   :after ivy
   :config
   (counsel-mode 1))
 
-(use-package swiper :ensure t)
+(use-package swiper :ensure t
+  :after ivy
+  :bind ("C-s" . swiper-isearch))
 
 ;;; lsp-mode for compatible langs
 
@@ -98,15 +105,26 @@
   :after org
   :hook (org-mode . org-superstar-mode))
 
-;;; transient(required update for magit)
-(use-package transient :ensure t)
+;;; seq (required update for transient)
+(use-package seq :ensure t)
+
+;;; transient (required update for magit)
+(use-package transient :ensure t
+  :after seq)
 
 ;;; magit
 (use-package magit :ensure t
   :after transient)
 
 ;;; go
-(use-package go-mode :ensure t)
+(use-package go-mode :ensure t
+  :after lsp-mode
+  :hook (go-mode . lsp))
+
+;;; rust
+(use-package rust-mode :ensure t
+  :after lsp-mode
+  :hook (rust-mode . lsp))
 
 ;;; emacs settings
 (use-package emacs :ensure nil
