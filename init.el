@@ -44,6 +44,14 @@
 
 ;;; packages
 
+;;; exec-path-from-shell to make sure eshell matches .bashrc
+(use-package exec-path-from-shell :ensure t
+  :demand t
+  :config
+  (when (or (daemonp) (memq window-system '(mac ns x)))
+    (exec-path-from-shell-initialize)
+    (exec-path-from-shell-copy-env "GOPATH")))
+
 ;;; xref (updated version for project.el)
 (use-package xref :ensure t)
 
@@ -77,6 +85,8 @@
 ;;; company for autocompletion
 (use-package company :ensure t
   :config
+  (setq company-idle-delay 0)
+  (setq company-minimum-prefix-length 1)
   (company-mode))
 
 ;;; flycheck for on-the-fly checking
@@ -87,12 +97,16 @@
 ;;; lsp-mode for compatible langs
 
 (use-package lsp-mode :ensure t
-  :commands lsp
-  :hook ((rust-mode . lsp)
-	 (go-mode .lsp)))
+  :hook (;; rust hooks
+	 (rust-mode . lsp)
+	 ;; go hooks
+	 (go-mode . (lambda() (progn
+		      (add-hook 'before-save-hook #'lsp-format-buffer t t)
+		      (add-hook 'before-save-hook #'lsp-organize-imports t t))))
+	 (go-mode . lsp-deferred)))
 
 (use-package lsp-ui :ensure t)
-					;
+
 ;; ivy interface for lsp-mode
 (use-package lsp-ivy :ensure t)
 
