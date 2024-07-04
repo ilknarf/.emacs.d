@@ -84,10 +84,10 @@
 
 ;;; company for autocompletion
 (use-package company :ensure t
+  :hook (after-init . global-company-mode)
   :config
   (setq company-idle-delay 0)
-  (setq company-minimum-prefix-length 1)
-  (company-mode))
+  (setq company-minimum-prefix-length 1))
 
 ;;; flycheck for on-the-fly checking
 (use-package flycheck :ensure t
