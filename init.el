@@ -96,7 +96,6 @@
   (global-flycheck-mode))
 
 ;;; lsp-mode for compatible langs
-
 (use-package lsp-mode :ensure t
   :hook (;; rust hooks
 	 (rust-mode . lsp)
@@ -180,7 +179,18 @@
   (org-roam-db-autosync-enable))
 
 ;;; seq (required update for transient)
-(use-package seq :ensure t)
+;; code copied from https://github.com/progfolio/elpaca/issues/216 to remove seq warning
+(defun +elpaca-unload-seq (e)
+  (and (featurep 'seq) (unload-feature 'seq t))
+  (elpaca--continue-build e))
+
+;; You could embed this code directly in the reicpe, I just abstracted it into a function.
+(defun +elpaca-seq-build-steps ()
+  (append (butlast (if (file-exists-p (expand-file-name "seq" elpaca-builds-directory))
+                       elpaca--pre-built-steps elpaca-build-steps))
+          (list '+elpaca-unload-seq 'elpaca--activate-package)))
+
+(use-package seq :ensure `(seq :build ,(+elpaca-seq-build-steps)))
 
 ;;; transient (required update for magit)
 (use-package transient :ensure t
