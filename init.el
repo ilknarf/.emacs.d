@@ -125,7 +125,7 @@
         ("p" "permanent" plain "%?"
          :target (file+head "permanent/%<%Y%m%d%H%M%S>-${slug}.org"
                             "#+title: ${title}\n") :unnarrowed t)
-        ("P" "articles" plain "%?"
+        ("a" "articles" plain "%?"
          :target (file+head "articles/%<%Y%m%d%H%M%S>-${slug}.org"
                             "#+title: ${title}\n") :unnarrowed t)
         )))
