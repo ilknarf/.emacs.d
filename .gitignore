@@ -16,3 +16,5 @@ eshell/
 bookmarks
 eln-cache/
 .lsp-session*
+*.db
+.org*

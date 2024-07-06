@@ -107,14 +107,8 @@
 
 (use-package lsp-ui :ensure t)
 
-;; ivy interface for lsp-mode
+;;; ivy interface for lsp-mode
 (use-package lsp-ivy :ensure t)
-
-;;; adaptive wrap
-(use-package adaptive-wrap :ensure
-  :hook (org-mode . adaptive-wrap-prefix-mode)
-  :config
-  (setq adaptive-wrap-extra-indent 2))
 
 ;;; org mode
 (use-package org :ensure t
@@ -127,6 +121,12 @@
   (setq org-startup-indented t)
   (setq org-agenda-todo-list-sublevels t))
 
+;;; adaptive wrap
+(use-package adaptive-wrap :ensure
+  :hook (org-mode . adaptive-wrap-prefix-mode)
+  :config
+  (setq adaptive-wrap-extra-indent 2))
+
 ;;; org-superstar
 (use-package org-superstar :ensure t
   :after org
@@ -134,7 +134,8 @@
 
 ;;; org roam
 (use-package org-roam :ensure t
-  :after org
+  ;; FIXME done so the bindings aren't autoloaded, there's definitely a better way to do this
+  :demand t
   :custom
   (org-roam-directory (file-truename "~/zk"))
   ;; copied from https://github.com/org-roam/org-roam
@@ -146,9 +147,15 @@
          ;; Dailies
          ("C-c n j" . org-roam-dailies-capture-today))
   :config
+  (add-to-list 'display-buffer-alist
+             '("\\*org-roam\\*"
+               (display-buffer-in-direction)
+               (direction . right)
+               (window-width . 0.33)
+               (window-height . fit-window-to-buffer)))
   ;; If you're using a vertical completion framework, you might want a more informative completion interface
   (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-  (org-roam-db-autosync-mode))
+  (org-roam-db-autosync-enable))
 
 ;;; seq (required update for transient)
 (use-package seq :ensure t)
@@ -166,6 +173,11 @@
 
 ;;; rust
 (use-package rust-mode :ensure t)
+
+;; info (for info path)
+(use-package info :ensure nil
+  :config
+  (add-to-list 'Info-default-directory-list "~/.local/share/info"))
 
 ;;; emacs settings
 (use-package emacs :ensure nil
