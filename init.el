@@ -119,16 +119,7 @@
   (setq org-todo-keywords
 	'((sequence "TODO" "IN-PROGRESS" "BLOCKED" "DONE")))
   (setq org-startup-indented t)
-  (setq org-agenda-todo-list-sublevels t)
-  (setq org-roam-capture-templates
-      '(
-        ("p" "permanent" plain "%?"
-         :target (file+head "permanent/%<%Y%m%d%H%M%S>-${slug}.org"
-                            "#+title: ${title}\n") :unnarrowed t)
-        ("a" "articles" plain "%?"
-         :target (file+head "articles/%<%Y%m%d%H%M%S>-${slug}.org"
-                            "#+title: ${title}\n") :unnarrowed t)
-        )))
+  (setq org-agenda-todo-list-sublevels t))
 
 ;;; adaptive wrap
 (use-package adaptive-wrap :ensure
@@ -145,6 +136,16 @@
 (use-package org-roam :ensure t
   ;; FIXME done so the bindings aren't autoloaded, there's definitely a better way to do this
   :demand t
+  :init
+  ;; from https://jethrokuan.github.io/org-roam-guide/
+  (cl-defmethod org-roam-node-type ((node org-roam-node))
+  "Return the TYPE of NODE."
+  (condition-case nil
+      (file-name-nondirectory
+       (directory-file-name
+        (file-name-directory
+         (file-relative-name (org-roam-node-file node) org-roam-directory))))
+    (error "")))
   :custom
   (org-roam-directory (file-truename "~/zk"))
   ;; copied from https://github.com/org-roam/org-roam
@@ -156,6 +157,17 @@
          ;; Dailies
          ("C-c n j" . org-roam-dailies-capture-today))
   :config
+    (setq org-roam-capture-templates
+      '(
+        ("p" "permanent" plain "%?"
+         :target (file+head "permanent/%<%Y%m%d%H%M%S>-${slug}.org"
+                            "#+title: ${title}\n") :unnarrowed t)
+        ("a" "article" plain "%?"
+         :target (file+head "articles/%<%Y%m%d%H%M%S>-${slug}.org"
+                            "#+title: ${title}\n") :unnarrowed t)
+	("t" "topic" plain "%?"
+         :target (file+head "topics/%<%Y%m%d%H%M%S>-${slug}.org"
+                            "#+title: ${title}\n") :unnarrowed t)))
   (add-to-list 'display-buffer-alist
              '("\\*org-roam\\*"
                (display-buffer-in-direction)
@@ -163,7 +175,8 @@
                (window-width . 0.33)
                (window-height . fit-window-to-buffer)))
   ;; If you're using a vertical completion framework, you might want a more informative completion interface
-  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  (setq org-roam-node-display-template
+      (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
   (org-roam-db-autosync-enable))
 
 ;;; seq (required update for transient)
