@@ -1,4 +1,5 @@
 ;;; elpaca install
+
 (defvar elpaca-installer-version 0.7)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
@@ -63,7 +64,7 @@
 
 ;;; ivy, swiper, counsel
 (use-package ivy :ensure t
-  :demand
+  :demand t
   :bind (("C-c C-r" . ivy-resume)
 	 ("C-c v" . ivy-push-view)
 	 ("C-c V" . ivy-push-view))
@@ -73,7 +74,7 @@
   (setq ivy-count-format "(%d/%d) "))
 
 (use-package counsel :ensure t
-  :demand
+  :demand t
   :after ivy
   :config
   (counsel-mode 1))
@@ -136,16 +137,6 @@
 (use-package org-roam :ensure t
   ;; FIXME done so the bindings aren't autoloaded, there's definitely a better way to do this
   :demand t
-  :init
-  ;; from https://jethrokuan.github.io/org-roam-guide/
-  (cl-defmethod org-roam-node-type ((node org-roam-node))
-  "Return the TYPE of NODE."
-  (condition-case nil
-      (file-name-nondirectory
-       (directory-file-name
-        (file-name-directory
-         (file-relative-name (org-roam-node-file node) org-roam-directory))))
-    (error "")))
   :custom
   (org-roam-directory (file-truename "~/zk"))
   ;; copied from https://github.com/org-roam/org-roam
@@ -176,7 +167,16 @@
                (window-height . fit-window-to-buffer)))
   ;; If you're using a vertical completion framework, you might want a more informative completion interface
   (setq org-roam-node-display-template
-      (concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+	(concat "${type:15} ${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+    ;; from https://jethrokuan.github.io/org-roam-guide/
+  (cl-defmethod org-roam-node-type ((node org-roam-node))
+    "Return the TYPE of NODE."
+    (condition-case nil
+      (file-name-nondirectory
+       (directory-file-name
+        (file-name-directory
+         (file-relative-name (org-roam-node-file node) org-roam-directory))))
+    (error "")))
   (org-roam-db-autosync-enable))
 
 ;;; seq (required update for transient)
@@ -217,12 +217,8 @@
   ;; always start fullscreen
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
   ;; set custom var file so this isn't polluted
-  (defconst custom-file-path "~/.emacs.d/custom.el")
-  (setq custom-file custom-file-path)
-  ;; load it if not already loaded
-  (unless (or (fboundp 'custom-file-loaded) (not (file-exists-p custom-file-path)))
-    (load custom-file)
-    (setq custom--file-loaded t))
+  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+  (add-hook 'elpaca-after-init-hook (lambda () (load custom-file 'noerror)))
   ;; load theme
   (load-theme 'modus-vivendi)
   ;; add default font
