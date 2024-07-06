@@ -119,7 +119,16 @@
   (setq org-todo-keywords
 	'((sequence "TODO" "IN-PROGRESS" "BLOCKED" "DONE")))
   (setq org-startup-indented t)
-  (setq org-agenda-todo-list-sublevels t))
+  (setq org-agenda-todo-list-sublevels t)
+  (setq org-roam-capture-templates
+      '(
+        ("p" "permanent" plain "%?"
+         :target (file+head "permanent/%<%Y%m%d%H%M%S>-${slug}.org"
+                            "#+title: ${title}\n") :unnarrowed t)
+        ("P" "articles" plain "%?"
+         :target (file+head "articles/%<%Y%m%d%H%M%S>-${slug}.org"
+                            "#+title: ${title}\n") :unnarrowed t)
+        )))
 
 ;;; adaptive wrap
 (use-package adaptive-wrap :ensure
