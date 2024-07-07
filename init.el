@@ -183,14 +183,10 @@
          (file-relative-name (org-roam-node-file node) org-roam-directory))))
       (error "")))
   ;; exclude dailies and file/links from org roam graph
-  (setq org-roam-graph-link-hidden-types '("file"                        ; dont render links to files
+  (setq org-roam-graph-link-hidden-types '("file"                      ; dont render links to files
 					 "http"                        ; - http links
 					 "https"                       ; - https links
-					 "fuzzy")                      ; - links to image files, tables etc
-
-      org-roam-graph-exclude-patterns '("articles"                        ; do not render anything in the articles folder
-					"dailies")                     ; do not render anything in the dailies folder
-      )
+					 "fuzzy"))                     ; - links to image files, tables etc
   (org-roam-db-autosync-enable))
 
 ;;; seq (required update for transient)
