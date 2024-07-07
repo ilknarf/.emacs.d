@@ -152,9 +152,15 @@
         ("p" "permanent" plain "%?"
          :target (file+head "permanent/%<%Y%m%d%H%M%S>-${slug}.org"
                             "#+title: ${title}\n") :unnarrowed t)
+	;; my blog posts
         ("a" "article" plain "%?"
          :target (file+head "articles/%<%Y%m%d%H%M%S>-${slug}.org"
                             "#+title: ${title}\n") :unnarrowed t)
+	;; my book references
+	("b" "book" plain "%?"
+         :target (file+head "books/%<%Y%m%d%H%M%S>-${slug}.org"
+                            "#+title: ${title}\n") :unnarrowed t)
+	;; topic nodes for general topics
 	("t" "topic" plain "%?"
          :target (file+head "topics/%<%Y%m%d%H%M%S>-${slug}.org"
                             "#+title: ${title}\n") :unnarrowed t)))
@@ -175,7 +181,16 @@
        (directory-file-name
         (file-name-directory
          (file-relative-name (org-roam-node-file node) org-roam-directory))))
-    (error "")))
+      (error "")))
+  ;; exclude dailies and file/links from org roam graph
+  (setq org-roam-graph-link-hidden-types '("file"                        ; dont render links to files
+					 "http"                        ; - http links
+					 "https"                       ; - https links
+					 "fuzzy")                      ; - links to image files, tables etc
+
+      org-roam-graph-exclude-patterns '("articles"                        ; do not render anything in the articles folder
+					"dailies")                     ; do not render anything in the dailies folder
+      )
   (org-roam-db-autosync-enable))
 
 ;;; seq (required update for transient)
