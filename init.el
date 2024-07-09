@@ -1,4 +1,7 @@
 ;;; elpaca install
+(defvar is-windows (eq system-type 'windows-nt))
+(defvar is-linux (eq system-type 'gnu/linux))
+(defvar is-mac (eq system-type 'ms-dos))
 
 (defvar elpaca-installer-version 0.7)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
@@ -103,7 +106,12 @@
 	 (go-mode . (lambda() (progn
 		      (add-hook 'before-save-hook #'lsp-format-buffer t t)
 		      (add-hook 'before-save-hook #'lsp-organize-imports t t))))
-	 (go-mode . lsp-deferred)))
+	 (go-mode . lsp-deferred)
+	 ;; c/cpp hooks
+	 (c-mode . lsp)
+	 (c++-mode . lsp))
+  :config
+  (setq lsp-idle-delay 0.2))
 
 (use-package lsp-ui :ensure t)
 
