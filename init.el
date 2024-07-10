@@ -111,7 +111,10 @@
 	 (c-mode . lsp)
 	 (c++-mode . lsp))
   :config
-  (setq lsp-idle-delay 0.2))
+  (setq
+   lsp-clangd-binary-path "/usr/bin/clangd"
+   lsp-idle-delay 0.2
+   ))
 
 (use-package lsp-ui :ensure t)
 
@@ -224,6 +227,9 @@
 
 ;;; rust
 (use-package rust-mode :ensure t)
+
+;;; c
+(use-package clang-format :ensure t)
 
 ;; info (for info path)
 (use-package info :ensure nil
