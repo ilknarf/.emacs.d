@@ -225,16 +225,35 @@
 ;;; go
 (use-package go-mode :ensure t)
 
+;;; lua
+(use-package lua-mode :ensure t)
+
 ;;; rust
 (use-package rust-mode :ensure t)
 
 ;;; c
 (use-package clang-format :ensure t)
 
+;;; yaml
+(use-package yaml-mode :ensure t)
+
+;;; graphql
+(use-package graphql-mode :ensure t)
+
+;;; which-key
+(use-package which-key :ensure t
+  :config
+  (which-key-mode))
+
+(use-package catppuccin-theme :ensure t
+  :config
+  (load-theme 'catppuccin :no-confirm))
+
 ;; info (for info path)
 (use-package info :ensure nil
   :config
   (add-to-list 'Info-default-directory-list "~/.local/share/info"))
+
 
 ;;; emacs settings
 (use-package emacs :ensure nil
@@ -254,11 +273,9 @@
   ;; set custom var file so this isn't polluted
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   (add-hook 'elpaca-after-init-hook (lambda () (load custom-file 'noerror)))
-  ;; load theme
-  (load-theme 'modus-vivendi)
   ;; add default font
   (add-to-list 'default-frame-alist
-	       '(font . "DejaVu Sans Mono-12")))
+	       '(font . "IosevkaTermSlab Nerd Font Mono 11")))
 
 
 ;;; Local Variables:
