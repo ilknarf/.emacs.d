@@ -95,8 +95,22 @@
 
 ;;; flycheck for on-the-fly checking
 (use-package flycheck :ensure t
+  :hook (after-init . global-flycheck-mode))
+
+(use-package avy :ensure t
+  :bind (("M-g e" . avy-goto-word-0)))
+
+;;; yasnippet-snippets for yasnippet templates
+(use-package yasnippet-snippets :ensure t)
+
+;;; yasnippet for language snippets
+(use-package yasnippet :ensure
   :config
-  (global-flycheck-mode))
+  (setq
+   yas-wrap-around-region t
+   yas-verbosity 1)
+  (yas-reload-all)
+  (yas-global-mode t))
 
 ;;; lsp-mode for compatible langs
 (use-package lsp-mode :ensure t
@@ -106,7 +120,7 @@
 	 (go-mode . (lambda() (progn
 		      (add-hook 'before-save-hook #'lsp-format-buffer t t)
 		      (add-hook 'before-save-hook #'lsp-organize-imports t t))))
-	 (go-mode . lsp-deferred)
+	 (go-mode . lsp)
 	 ;; c/cpp hooks
 	 (c-mode . lsp)
 	 (c++-mode . lsp))
@@ -114,6 +128,8 @@
   (setq
    lsp-clangd-binary-path "/usr/bin/clangd"
    lsp-idle-delay 0.2
+   ;; disable because of company
+   lsp=completion-provider :none
    ))
 
 (use-package lsp-ui :ensure t)
