@@ -284,6 +284,9 @@
   (electric-pair-mode 1)
   ;; delete whitepace on save
   (add-hook 'write-file-hooks 'delete-trailing-whitespace)
+  ;; line numbers
+  (setq display-line-numbers-type 'relative)
+  (global-display-line-numbers-mode)
   ;; always start fullscreen
   (add-to-list 'default-frame-alist '(fullscreen . maximized))
   ;; set custom var file so this isn't polluted
