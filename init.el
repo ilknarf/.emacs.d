@@ -98,6 +98,7 @@
   :hook (after-init . global-flycheck-mode))
 
 (use-package avy :ensure t
+  :demand t
   :bind (("M-g e" . avy-goto-word-0)))
 
 ;;; yasnippet-snippets for yasnippet templates
@@ -288,7 +289,7 @@
   (setq display-line-numbers-type 'relative)
   (global-display-line-numbers-mode)
   ;; always start fullscreen
-  (add-to-list 'default-frame-alist '(fullscreen . maximized))
+  (toggle-frame-maximized)
   ;; set custom var file so this isn't polluted
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   (add-hook 'elpaca-after-init-hook (lambda () (load custom-file 'noerror)))
