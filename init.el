@@ -239,6 +239,11 @@
 (use-package magit :ensure t
   :after transient)
 
+;;; common lisp
+(use-package sly :ensure t
+  :config
+  (setq inferior-lisp-program "/usr/local/bin/sbcl"))
+
 ;;; go
 (use-package go-mode :ensure t)
 
@@ -274,6 +279,7 @@
 
 ;;; emacs settings
 (use-package emacs :ensure nil
+  :hook (after-init . toggle-frame-maximized)
   :config
   ;; rudimentary setup options
   (setq ring-bell-function #'ignore)
@@ -281,15 +287,11 @@
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
-  ;; autocomplete brackets
-  (electric-pair-mode 1)
   ;; delete whitepace on save
   (add-hook 'write-file-hooks 'delete-trailing-whitespace)
   ;; line numbers
   (setq display-line-numbers-type 'relative)
   (global-display-line-numbers-mode)
-  ;; always start fullscreen
-  (toggle-frame-maximized)
   ;; set custom var file so this isn't polluted
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   (add-hook 'elpaca-after-init-hook (lambda () (load custom-file 'noerror)))
