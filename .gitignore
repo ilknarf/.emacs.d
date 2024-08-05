@@ -19,3 +19,4 @@ eln-cache/
 *.db
 .org*
 custom.el
+session.*

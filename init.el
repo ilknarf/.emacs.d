@@ -242,7 +242,7 @@
 ;;; common lisp
 (use-package sly :ensure t
   :config
-  (setq inferior-lisp-program "/usr/local/bin/sbcl"))
+  (setq inferior-lisp-program "ros -Q run"))
 
 ;;; go
 (use-package go-mode :ensure t)
@@ -267,15 +267,23 @@
   :config
   (which-key-mode))
 
-(use-package catppuccin-theme :ensure t
-  :config
-  (load-theme 'catppuccin :no-confirm))
+;; (use-package catppuccin-theme :ensure t
+;;   :config
+;;   (load-theme 'catppuccin :no-confirm))
+
+;; (use-package adwaita-dark-theme :ensure t
+;;   :config
+;;   (load-theme 'adwaita-dark :no-confirm))
 
 ;; info (for info path)
 (use-package info :ensure nil
   :config
   (add-to-list 'Info-default-directory-list "~/.local/share/info"))
 
+;; spaceline
+(use-package spaceline :ensure t
+  :config
+  (spaceline-emacs-theme))
 
 ;;; emacs settings
 (use-package emacs :ensure nil
@@ -295,6 +303,12 @@
   ;; set custom var file so this isn't polluted
   (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
   (add-hook 'elpaca-after-init-hook (lambda () (load custom-file 'noerror)))
+  ;; theme
+  (setq modus-themes-region '(bg-only)
+	modus-themes-mode-line '(accented borderless padded)
+	modus-themes-prompts '(bold)
+	modus-themes-variable-pitch-ui t)
+  (load-theme 'modus-vivendi :no-confirm)
   ;; add default font
   (add-to-list 'default-frame-alist
 	       '(font . "IosevkaTermSlab Nerd Font Mono 11")))
