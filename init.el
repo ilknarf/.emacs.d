@@ -311,7 +311,7 @@
   (load-theme 'modus-vivendi :no-confirm)
   ;; add default font
   (add-to-list 'default-frame-alist
-	       '(font . "IosevkaTermSlab Nerd Font Mono 11")))
+	       '(font . "DejaVuSansM Nerd Font Mono 11")))
 
 
 ;;; Local Variables:
